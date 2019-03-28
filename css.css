@@ -1,0 +1,102 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* font-family: Arial; */
+  /* font-family: "Baloo Chettan", cursive; */
+  /* font-family: "Baloo Bhaina", cursive; */
+  font-family: "Open Sans", sans-serif;
+  font-size: 15px;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+body {
+  background-color: #eecfbb;
+  background-image: url("./assets/paper.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+h1 {
+  margin: 3% auto 1.6% auto;
+  text-align: center;
+  font-family: "Baloo Chettan", cursive;
+  font-size: 3rem;
+  letter-spacing: 4px;
+}
+
+.search {
+  text-align: center;
+  font-size: 20px;
+  width: 100%;
+  padding: 10px;
+}
+
+header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  margin: auto;
+  text-align: center;
+}
+
+header p {
+  font-size: 1.6rem;
+}
+
+main {
+  text-align: center;
+  margin: 200px auto 0 auto;
+  width: 80%;
+}
+
+main button {
+  display: inline-block;
+  padding: 10px;
+  background-color: white;
+  border: solid 2px #000;
+  color: #000;
+  margin: 2%;
+}
+
+main button:hover {
+  background-color: #e6c9a7;
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.wrapper div {
+  margin: 10px;
+  width: 200px;
+  height: 272px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.wrapper div:hover {
+  background-color: white;
+}
+
+.wrapper div p {
+  line-height: 1.6;
+}
+
+.wrapper div img {
+  width: 86%;
+  height: 150px;
+  margin: auto;
+}
+
+h3 {
+  font-size: 16px;
+}
