@@ -1,15 +1,22 @@
 // Global variables
 let wrapper = document.querySelector(".wrapper");
 let subtitle = document.querySelector(".subtitle");
+let subtitleForStats = document.querySelector(".subtitle-for-stats");
 let searchInput = document.querySelector(".search");
 let buttons = document.querySelector(".buttons");
+let isAZ = false;
+let isCapital = false;
+let isPopulation = false;
 console.log(buttons);
 
 let sortNameBtn = document.querySelector(".name");
 let sortCapitalBtn = document.querySelector(".capital");
 let sortPopulationBtn = document.querySelector(".population");
 
-// // we should have copies from the countriesObject so that we don't change the original one
+let populationDiv = document.querySelector(".top-ten-population");
+let languagesDiv = document.querySelector(".top-ten-languages");
+
+// We should have copies from the countriesObject so that we don't change the original one
 const copyCountries = [...countries];
 const copyCountriesTwo = [...countries];
 const copyCountriesThree = [...countries];
@@ -38,7 +45,7 @@ const filterCountries = (arr, search) => {
 const createContent = content => {
   const { name, capital, languages, population, flag } = content;
   return `<div>
-    <p>${name}</p>
+    <h3>${name}</h3>
     <p>${capital}</p>
     <p>${languages.join(", ")}</p>
     <p>${population}</p>
@@ -55,9 +62,6 @@ const showCountries = arr => {
   });
   wrapper.innerHTML = contents;
 };
-
-// default function that shows all the countries in alphabetitc order by  country names when the page is loaded
-showCountries(filterCountries(countries, searchInput.value));
 
 // default subtitle text
 subtitle.textContent = `Currently, we have ${countries.length} countries`;
@@ -98,12 +102,6 @@ const populationArr = copyCountriesThree.sort(function(a, b) {
   return y - x;
 });
 
-// Event listener to get search input
-searchInput.addEventListener("input", e => {
-  let searchTerm = e.target.value.toLowerCase();
-  showCountries(filterCountries(countries, searchTerm));
-});
-
 // Event listeners for sort-buttons
 buttons.addEventListener("click", e => {
   // console.log(e.target.className);
@@ -115,6 +113,7 @@ buttons.addEventListener("click", e => {
         showCountries(filterCountries(reversedArr, searchTerm));
         i.className = "fas fa-sort-alpha-up";
         sortNameBtn.style.backgroundColor = "#E6C9A7";
+        console.log("true");
       } else if (i.className === "fas fa-sort-alpha-up") {
         i.className = "fas fa-sort-alpha-down";
         sortNameBtn.style.backgroundColor = "#fff";
@@ -128,3 +127,65 @@ buttons.addEventListener("click", e => {
     showCountries(filterCountries(populationArr, searchTerm));
   }
 });
+
+// Event listener to get search input
+searchInput.addEventListener("input", e => {
+  let searchTerm = e.target.value.toLowerCase();
+
+  showCountries(filterCountries(countries, searchTerm));
+});
+
+// default function that shows all the countries in alphabetitc order by  country names when the page is loaded
+showCountries(filterCountries(countries, searchInput.value));
+
+// STATISTICS TEN MOST POPULATED COUNTRIES AND TEN MOST LANGUAGES
+const tenPopulated = populationArr.slice(0, 10);
+//  tenLanguages
+console.log(copyCountries[0].languages);
+let emptyArr = [];
+copyCountries.forEach(country => {
+  country.languages.forEach(language => {
+    emptyArr.push(language);
+  });
+});
+
+// counting the population of the world
+let count = 0;
+countries.forEach(country => {
+  // console.log(country.population);
+  count = count + country.population;
+});
+const worldPopulation = count;
+
+// the most populated country
+// const mostPopulatedCountry = countries[0].population; // chinas population
+
+const createPopulationContent = content => {
+  const { name, population } = content;
+  let width = (population / worldPopulation) * 100;
+  return `<p>${name}</p>
+  <div class="container">
+<div class="population-bar" style="width: ${width}%">${population}</div>
+  </div>`;
+};
+
+// const createMostLanguages = content => {
+//   const {name, population} = content;
+// let width =
+//   return `<p>${name}</p>
+//   <div class="container">
+// <div class="population-bar" style="width: "></div>
+// </div>`;
+// };
+// function that shows the countries statistics in the bottom of the page
+const showCountriesPopulation = arr => {
+  let contents = "";
+  // wrapper.innerHTML = "";
+  arr.forEach((country, i) => {
+    contents += createPopulationContent(country);
+  });
+  populationDiv.innerHTML = contents;
+};
+
+showCountriesPopulation(tenPopulated);
+subtitleForStats.textContent = "Ten most populated countries";

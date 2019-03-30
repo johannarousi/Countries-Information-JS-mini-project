@@ -20,7 +20,7 @@
   <body>
     <header>
       <h1>World Countries List Information</h1>
-      <p class="subtitle"></p>
+      <h2 class="subtitle"></h2>
     </header>
     <main>
       <input
@@ -32,13 +32,19 @@
 
       <div class="buttons">
         <button class="btn name">
-          Sorty By Name <i class="fas fa-sort-alpha-down"></i>
+          Sort By Name <i class="fas fa-sort-alpha-down"></i>
         </button>
-        <button class="btn capital">Sorty By capital</button>
-        <button class="btn population">Sorty By Population</button>
+        <button class="btn capital">Sort By capital</button>
+        <button class="btn population">Sort By Population</button>
       </div>
+      <a href="#population"
+        ><button><i class="fas fa-align-left"></i></button
+      ></a>
 
       <div class="wrapper"></div>
+      <h2 class="subtitle-for-stats"></h2>
+      <div class="top-ten-population" id="population"></div>
+      <div class="top-ten-languages"></div>
     </main>
     <script src="./js/countries-obj.js"></script>
     <script src="./js/main.js"></script>
