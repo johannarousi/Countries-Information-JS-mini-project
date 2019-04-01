@@ -3,41 +3,34 @@ let wrapper = document.querySelector(".wrapper");
 let subtitle = document.querySelector(".subtitle");
 let subtitleForStats = document.querySelector(".subtitle-for-stats");
 let searchInput = document.querySelector(".search");
-let buttons = document.querySelector(".buttons");
-let isAZ = false;
-let isCapital = false;
-let isPopulation = false;
-console.log(buttons);
-
+let topTenDiv = document.querySelector(".top-ten");
 let sortNameBtn = document.querySelector(".name");
 let sortCapitalBtn = document.querySelector(".capital");
 let sortPopulationBtn = document.querySelector(".population");
+let buttons = document.querySelector(".buttons");
+// console.log(buttons);
+let buttonsTopTen = document.querySelector(".buttons-top-ten");
+// console.log(buttonsTopTen);
+const copiedCountries = countries;
+let isClicked = false;
+let i = document.querySelector("i");
 
-let populationDiv = document.querySelector(".top-ten-population");
-let languagesDiv = document.querySelector(".top-ten-languages");
-
-// We should have copies from the countriesObject so that we don't change the original one
-const copyCountries = [...countries];
-const copyCountriesTwo = [...countries];
-const copyCountriesThree = [...countries];
-
-// Filter function
-const filterCountries = (arr, search) => {
+// Filter function for the search input
+const filterCountries = (arr, input) => {
   const filteredCountries = arr.filter(country => {
     let { name, capital, languages } = country;
-    let isName = name.toLowerCase().includes(search);
-    let isCapital = capital.toLowerCase().includes(search);
+    let isName = name.toLowerCase().includes(input);
+    let isCapital = capital.toLowerCase().includes(input);
     let isLanguages = languages
       .join()
       .toLowerCase()
-      .includes(search);
+      .includes(input);
     return isName || isCapital || isLanguages;
   });
-  let result = search == "" ? arr : filteredCountries;
+  let result = input == "" ? arr : filteredCountries;
   subtitle.textContent = `Currently, we have ${
     filteredCountries.length
   } countries`;
-
   return result;
 };
 
@@ -66,126 +59,198 @@ const showCountries = arr => {
 // default subtitle text
 subtitle.textContent = `Currently, we have ${countries.length} countries`;
 
-// array in reversed alphabetic order with country name
-// const nameArr = copyCountries.sort(function(a, b) {
-//   let x = a.name.toLowerCase();
-//   let y = b.name.toLowerCase();
-//   if (x > y) {
-//     return -1;
-//   }
-//   if (x < y) {
-//     return 1;
-//   }
-//   return 0;
-// });
-
-// but because the original is in alphabetic order we can just reverse it
-const reversedArr = countries.slice().reverse();
-
-// array in alphabetic order with capitals
-const capitalArr = copyCountriesTwo.sort(function(a, b) {
-  let x = a.capital.toLowerCase();
-  let y = b.capital.toLowerCase();
-  if (x < y) {
-    return -1;
-  }
-  if (x > y) {
-    return 1;
-  }
-  return 0;
-});
-
-// array in descending order with population
-const populationArr = copyCountriesThree.sort(function(a, b) {
-  let x = a.population;
-  let y = b.population;
-  return y - x;
-});
-
-// Event listeners for sort-buttons
-buttons.addEventListener("click", e => {
-  // console.log(e.target.className);
-  let searchTerm = e.target.value.toLowerCase();
-  if (e.target.className === "btn name") {
-    function buttonFunction() {
-      let i = document.querySelector("i");
-      if (i.className === "fas fa-sort-alpha-down") {
-        showCountries(filterCountries(reversedArr, searchTerm));
-        i.className = "fas fa-sort-alpha-up";
-        sortNameBtn.style.backgroundColor = "#E6C9A7";
-        console.log("true");
-      } else if (i.className === "fas fa-sort-alpha-up") {
-        i.className = "fas fa-sort-alpha-down";
-        sortNameBtn.style.backgroundColor = "#fff";
-        showCountries(filterCountries(countries, searchTerm));
+// sorting functions for sort buttons
+const sortByName = () => {
+  if (isClicked === false) {
+    let sorted = copiedCountries.sort((a, b) => {
+      if (a.name > b.name) {
+        return -1;
       }
-    }
-    buttonFunction();
-  } else if (e.target.className === "btn capital") {
-    showCountries(filterCountries(capitalArr, searchTerm));
+    });
+    showCountries(filterCountries(sorted, searchInput.value.toLowerCase()));
+    isClicked = true;
+    i.className = "fas fa-sort-alpha-up";
+    sortNameBtn.style.backgroundColor = "#E6C9A7";
   } else {
-    showCountries(filterCountries(populationArr, searchTerm));
+    sorted = copiedCountries.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+    });
+    showCountries(filterCountries(sorted, searchInput.value.toLowerCase()));
+    isClicked = false;
+    i.className = "fas fa-sort-alpha-down";
+    sortNameBtn.style.backgroundColor = "#fff";
+  }
+};
+
+const sortByCapital = () => {
+  if (isClicked === false) {
+    let sorted = copiedCountries.sort((a, b) => {
+      if (a.capital < b.capital) {
+        return -1;
+      }
+    });
+    showCountries(filterCountries(sorted, searchInput.value.toLowerCase()));
+    isClicked = true;
+  } else {
+    sorted = copiedCountries.sort((a, b) => {
+      if (a.capital > b.capital) {
+        return -1;
+      }
+    });
+    showCountries(filterCountries(sorted, searchInput.value.toLowerCase()));
+    isClicked = false;
+  }
+};
+
+const sortByPopulation = () => {
+  if (isClicked === false) {
+    let sorted = copiedCountries.sort((a, b) => {
+      if (a.population > b.population) {
+        return -1;
+      }
+    });
+    showCountries(filterCountries(sorted, searchInput.value.toLowerCase()));
+    isClicked = true;
+  } else {
+    sorted = copiedCountries.sort((a, b) => {
+      if (a.population < b.population) {
+        return -1;
+      }
+    });
+    showCountries(filterCountries(sorted, searchInput.value.toLowerCase()));
+    isClicked = false;
+  }
+};
+
+// Event listeners for buttons
+buttons.addEventListener("click", e => {
+  if (e.target.classList.contains("name")) {
+    sortByName();
+    e.target.classList.toggle("selected");
+    // console.log("name");
+  } else if (e.target.classList.contains("capital")) {
+    sortByCapital();
+    e.target.classList.toggle("selected");
+    // console.log("capital");
+  } else if (e.target.classList.contains("population")) {
+    sortByPopulation();
+    e.target.classList.toggle("selected");
+    // console.log("population");
   }
 });
 
 // Event listener to get search input
-searchInput.addEventListener("input", e => {
+searchInput.addEventListener("keyup", e => {
   let searchTerm = e.target.value.toLowerCase();
-
   showCountries(filterCountries(countries, searchTerm));
 });
 
 // default function that shows all the countries in alphabetitc order by  country names when the page is loaded
 showCountries(filterCountries(countries, searchInput.value));
 
-// STATISTICS TEN MOST POPULATED COUNTRIES AND TEN MOST LANGUAGES
+// STATISTICS: TEN MOST POPULATED COUNTRIES AND TEN MOST LANGUAGES
+
+// POPULATION GRAPH BAR
+// population array in descending order
+const populationArr = countries
+  .slice()
+  .sort((a, b) => b.population - a.population);
 const tenPopulated = populationArr.slice(0, 10);
-//  tenLanguages
-console.log(copyCountries[0].languages);
-let emptyArr = [];
-copyCountries.forEach(country => {
-  country.languages.forEach(language => {
-    emptyArr.push(language);
-  });
-});
 
 // counting the population of the world
-let count = 0;
-countries.forEach(country => {
-  // console.log(country.population);
-  count = count + country.population;
-});
-const worldPopulation = count;
+const worldPopulation = () => {
+  let count = 0;
+  countries.forEach(country => {
+    count = count + country.population;
+  });
+  return count;
+};
 
-// the most populated country
-// const mostPopulatedCountry = countries[0].population; // chinas population
-
+// function for creating content for the graph bar for population
 const createPopulationContent = content => {
   const { name, population } = content;
-  let width = (population / worldPopulation) * 100;
+  let width = (population / worldPopulation()) * 100;
   return `<p>${name}</p>
   <div class="container">
-<div class="population-bar" style="width: ${width}%">${population}</div>
+<div class="graph-bar" style="width: ${width}%">${population}</div>
   </div>`;
 };
 
-// const createMostLanguages = content => {
-//   const {name, population} = content;
-// let width =
-//   return `<p>${name}</p>
-//   <div class="container">
-// <div class="population-bar" style="width: "></div>
-// </div>`;
-// };
 // function that shows the countries statistics in the bottom of the page
 const showCountriesPopulation = arr => {
   let contents = "";
-  // wrapper.innerHTML = "";
   arr.forEach((country, i) => {
     contents += createPopulationContent(country);
   });
-  populationDiv.innerHTML = contents;
+  topTenDiv.innerHTML = contents;
 };
 
+// default graph bar in the page
 showCountriesPopulation(tenPopulated);
 subtitleForStats.textContent = "Ten most populated countries";
+
+// LANGUAGES GRAPH BAR
+// creating an array that has all the languages from all countries language-arrays
+let allTheLanguages = [];
+countries.forEach(country => {
+  country.languages.forEach(language => {
+    allTheLanguages.push(language);
+  });
+});
+
+const uniqLanguages = new Set(allTheLanguages);
+
+// creating an array of [language, number]- arrays
+const languageArr = [];
+for (let lang of uniqLanguages) {
+  let arr = allTheLanguages.filter(languages => languages === lang);
+  console.log(lang + " " + arr.length);
+  languageArr.push([lang, arr.length]);
+}
+// console.log(languageArr);
+
+// sorting the language arr so  that the languages most spoken are first
+languageArr.sort((a, b) => {
+  return b[1] - a[1];
+});
+// console.log(languageArr);
+
+// for the graph bar we need only ten most spoken languages
+const tenLanguages = languageArr.slice(0, 10);
+console.log(tenLanguages);
+
+// function for creating content for language graph bars
+// console.log(tenLanguages[0][1]); // 91 english
+const createMostLanguages = content => {
+  const [lang, number] = content;
+  let width = (number / tenLanguages[0][1]) * 100;
+  return `<p>${lang}</p>
+     <div class="container">
+   <div class="graph-bar" style="width: ${width}%">${number}</div>
+   </div>`;
+};
+
+// function that shows the countries statistics in the bottom of the page when called
+const showCountriesLanguage = arr => {
+  let contents = "";
+  // wrapper.innerHTML = "";
+  arr.forEach((lang, i) => {
+    contents += createMostLanguages(lang);
+  });
+  topTenDiv.innerHTML = contents;
+};
+
+// Event listener for top-ten buttons
+buttonsTopTen.addEventListener("click", e => {
+  if (e.target.classList.contains("most-populated")) {
+    showCountriesPopulation(tenPopulated);
+    subtitleForStats.textContent = "Ten most populated countries";
+    console.log("population");
+  } else if (e.target.classList.contains("most-languages")) {
+    showCountriesLanguage(tenLanguages);
+    subtitleForStats.textContent = "Ten most spoken languages";
+    console.log("languages");
+  }
+});

@@ -2,9 +2,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  /* font-family: Arial; */
-  /* font-family: "Baloo Chettan", cursive; */
-  /* font-family: "Baloo Bhaina", cursive; */
   font-family: "Open Sans", sans-serif;
   font-size: 15px;
 }
@@ -31,6 +28,7 @@ h1 {
   font-size: 4rem;
   letter-spacing: 4px;
 }
+
 h2 {
   font-size: 25px;
   margin: 2%;
@@ -45,7 +43,6 @@ h2 {
 
 header {
   width: 100%;
-
   margin: auto;
   text-align: center;
 }
@@ -73,6 +70,10 @@ main button:hover {
   background-color: #e6c9a7;
 }
 
+.selected {
+  background-color: #e6c9a7;
+}
+
 .wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -81,9 +82,12 @@ main button:hover {
 }
 
 .wrapper div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   margin: 10px;
   width: 200px;
-  height: 272px;
+  height: 300px;
   background-color: rgba(255, 255, 255, 0.5);
 }
 
@@ -91,21 +95,19 @@ main button:hover {
   background-color: white;
 }
 
-.wrapper div p {
-  line-height: 1.6;
-}
 h3 {
   text-transform: uppercase;
 }
+
 .wrapper div img {
   width: 86%;
   height: 150px;
-  margin: auto;
+  margin: 0 auto;
 }
 
-.top-ten-population {
-  width: 100%;
+.top-ten {
   margin: 2% 0 5% 0;
+  text-align: left;
 }
 
 .container {
@@ -113,8 +115,9 @@ h3 {
   background-color: #ddd;
 }
 
-.population-bar {
-  text-align: right;
+.graph-bar {
+  text-align: left;
   padding: 10px;
   background-color: green;
+  margin-bottom: 2%;
 }
